@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!-- =====================================================================
+     PROJECT PAGE TEMPLATE
+     ---------------------------------------------------------------------
+     To add a project:
+       1. Copy this file → projects/my-project.html  (lowercase, hyphens, no spaces)
+       2. Replace every "EDIT ME" below.
+       3. Add an entry to PROJECTS in assets/js/site.js with file: "my-project.html"
+          (that creates the home-page card, sidebar link and prev/next links).
+       4. Put images in assets/img/my-project/ and reference them as ../assets/img/my-project/….
+
+     Everything in the <aside class="sidebar"> and the <nav id="pager"> is
+     filled in automatically — leave those alone.
+     ===================================================================== -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EDIT ME: Project Title — Sushant Chadha</title>
+  <meta name="description" content="EDIT ME: one sentence describing the project (shows up in search results and link previews).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+
+<body data-page="project" data-root="../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-nav"></div>
+
+  <main class="container page" id="main">
+
+    <!-- Sidebar: filled automatically. -->
+    <aside class="sidebar">
+      <a class="back" href="../index.html#projects">← All projects</a>
+      <h4>On this page</h4>
+      <nav class="toc" id="toc" aria-label="On this page"></nav>
+      <details class="toc-mobile"><summary>Jump to section</summary><nav id="toc-mobile"></nav></details>
+      <h4 class="h4-gap">Other projects</h4>
+      <ul id="sidebar-projects"></ul>
+    </aside>
+
+    <article>
+      <header class="project-head">
+        <div class="eyebrow" id="project-eyebrow">Project</div>
+        <h1>EDIT ME: Project Title</h1>
+        <p class="lead">EDIT ME: one or two sentences — what you did and why it mattered.</p>
+        <div class="meta">
+          <span><strong>Tools</strong> EDIT ME</span>
+          <span><strong>Role</strong> EDIT ME</span>
+          <span><strong>When</strong> EDIT ME</span>
+        </div>
+
+        <!-- The takeaway box is what a busy recruiter reads. Three bullets, numbers first. -->
+        <div class="callout">
+          <h3>Key takeaways</h3>
+          <ul>
+            <li>EDIT ME: what you built / did.</li>
+            <li>EDIT ME: the headline result, with a number.</li>
+            <li>EDIT ME: what happened because of it (decision made, tool adopted, next step).</li>
+          </ul>
+        </div>
+      </header>
+
+      <!-- Every <h2> and <h3> in the article shows up in the "On this page" list automatically. -->
+      <h2>Overview</h2>
+      <p>EDIT ME: the context — what problem the team had and why you took it on.</p>
+
+      <h2>Setup</h2>
+      <p>EDIT ME: how the study was set up. Tools, models, assumptions, mesh, boundary conditions…</p>
+
+      <!-- ---------- IMAGE ---------- class="zoomable" makes it click-to-enlarge; add "narrow" for portrait/small images. -->
+      <figure class="zoomable">
+        <img src="../assets/img/EDIT-ME/figure.png" alt="EDIT ME: describe the image for screen readers" loading="lazy">
+        <figcaption><strong>Figure title.</strong> EDIT ME: what the image shows.</figcaption>
+      </figure>
+
+      <!-- ---------- TWO IMAGES SIDE BY SIDE ---------- -->
+      <div class="fig-row">
+        <figure class="zoomable">
+          <img src="../assets/img/EDIT-ME/left.png" alt="" loading="lazy">
+          <figcaption>Left caption.</figcaption>
+        </figure>
+        <figure class="zoomable">
+          <img src="../assets/img/EDIT-ME/right.png" alt="" loading="lazy">
+          <figcaption>Right caption.</figcaption>
+        </figure>
+      </div>
+
+      <h2>Results</h2>
+      <p>EDIT ME: what you found.</p>
+
+      <!-- ---------- TABLE ----------
+           Wrap tables in .table-wrap so they scroll sideways on phones.
+           Add data-heat to the <table> to colour numeric cells (green positive, red negative);
+           data-heat-min / data-heat-max fix the colour scale so several tables match. -->
+      <div class="table-wrap">
+        <table>
+          <caption>EDIT ME: table title</caption>
+          <thead><tr><th>Case</th><th>Value A</th><th>Value B</th><th>% difference</th></tr></thead>
+          <tbody>
+            <tr><th>Baseline</th><td>1.00</td><td>2.00</td><td>0%</td></tr>
+            <tr><th>Variant</th><td>1.10</td><td>1.90</td><td>−5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- =====================================================================
+           EMBEDS — three flavours. All are handled by assets/js/main.js.
+           ===================================================================== -->
+
+      <!-- (A) CLICK-TO-LOAD IFRAME — anything with a URL that allows embedding:
+               YouTube/Vimeo, Sketchfab, Plotly/Streamlit apps, a hosted viewer, Google Drive, ...
+               data-src     = the URL to show in the frame
+               data-ratio   = "16/9" (or use data-height="520" for a fixed pixel height)
+               data-poster  = optional preview image shown before the visitor clicks "Load"
+               data-autoload  (add this attribute to load immediately instead of on click)
+               A visitor can always "Open in new tab" from the caption. -->
+      <figure class="embed" data-src="https://www.youtube.com/embed/VIDEO_ID" data-ratio="16/9">
+        <figcaption>EDIT ME: caption for the embedded video / viewer.</figcaption>
+      </figure>
+
+      <!-- (B) STAR-CCM+ SCENE (.sce) — for Simcenter Web Viewer.
+               In STAR-CCM+: right-click the scene → Export → save as .sce, then put the file in assets/scenes/.
+               The card offers a download plus a button to Siemens' free browser viewer
+               (https://cloud.sw.siemens.com/simcenterviewer/_ — no license, files render locally).
+               data-poster = optional screenshot of the scene; data-size = optional file size to show. -->
+      <figure class="embed" data-mode="scene" data-src="../assets/scenes/EDIT-ME.sce"
+              data-poster="../assets/img/EDIT-ME/scene-preview.png" data-title="EDIT ME: Scene name" data-size="5 MB">
+        <figcaption>EDIT ME: what the scene shows and how to look at it (e.g. "toggle the pressure plane in the sidebar").</figcaption>
+      </figure>
+
+      <!-- (C) LINK CARD — for sites that refuse to be shown inside an iframe
+               (many corporate/cloud viewers do). Shows a poster + "Open" button in a new tab. -->
+      <figure class="embed" data-mode="card" data-src="https://example.com/viewer/session/123"
+              data-poster="../assets/img/EDIT-ME/preview.png" data-height="360" data-title="Interactive session">
+        <figcaption>EDIT ME: caption.</figcaption>
+      </figure>
+
+      <!-- (D) RAW SNIPPET — if a site hands you a full <iframe …> embed code, just paste it inside
+               <figure class="embed"> and it becomes responsive automatically. -->
+      <figure class="embed" data-ratio="16/9">
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Video" allowfullscreen></iframe>
+        <figcaption>EDIT ME: caption.</figcaption>
+      </figure>
+
+      <h2>Challenges &amp; Conclusion</h2>
+      <p>EDIT ME: what was hard, what you'd do differently, what the team did with the result.</p>
+
+      <!-- Prev/next: filled automatically. -->
+      <nav class="pager" id="pager" aria-label="Previous / next project"></nav>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPU-Accelerated CFD Simulations — Sushant Chadha</title>
+  <meta name="description" content="Benchmarking STAR-CCM+ GPU solvers (A100, RTX 6000, T4) against CPU-only runs on Texas A&M's Grace supercomputer across 2M–40M cell meshes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+
+<body data-page="project" data-root="../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-nav"></div>
+
+  <main class="container page" id="main">
+
+    <aside class="sidebar">
+      <a class="back" href="../index.html#projects">← All projects</a>
+      <h4>On this page</h4>
+      <nav class="toc" id="toc" aria-label="On this page"></nav>
+      <details class="toc-mobile"><summary>Jump to section</summary><nav id="toc-mobile"></nav></details>
+      <h4 class="h4-gap">Other projects</h4>
+      <ul id="sidebar-projects"></ul>
+    </aside>
+
+    <article>
+      <header class="project-head">
+        <div class="eyebrow" id="project-eyebrow">Project</div>
+        <h1>GPU-Accelerated CFD Simulations</h1>
+        <p class="lead">
+          A runtime and resource study of STAR-CCM+'s GPU solver on Texas A&amp;M HPRC's Grace supercomputer,
+          used to decide whether the whole team should migrate to a newer software version.
+        </p>
+        <!-- EDIT ME: dates are inferred from the write-up — adjust as needed. -->
+        <div class="meta">
+          <span><strong>Tools</strong> STAR-CCM+ v17.02 → v19.06 · TAMU HPRC Grace (A100, RTX 6000, T4, CPU nodes)</span>
+          <span><strong>Role</strong> Study design, benchmarking &amp; team rollout</span>
+          <span><strong>When</strong> Ahead of the 2025–26 season</span>
+        </div>
+
+        <div class="callout">
+          <h3>Key takeaways</h3>
+          <ul>
+            <li>Benchmarked STAR-CCM+ v19.06 GPU compute against v17.02 CPU-only runs on nine meshes (2M–40M cells) of the 2024–25 competition plane at 3° AoA, after confirming results matched within 2% across versions.</li>
+            <li>A100 nodes cut true solver time by 57–86% and service-unit (SU) cost by up to 68%; RTX 6000 and T4 nodes also saved time on every mesh. Savings grow with cell count, and the team's typical meshes sit at the high-savings end.</li>
+            <li>Outcome: the team moved to v19.06.008, and the GPU headroom made k-ω SST implicit-unsteady runs practical for studying flow separation and stall.</li>
+          </ul>
+        </div>
+      </header>
+
+      <h2>Overview</h2>
+      <p>
+        STAR-CCM+ has been slowly introducing GPU support for all its models from 2022 onwards, which is
+        intended to significantly speed up simulation runtime and significantly reduce resource and power
+        consumption per simulation. The team has run into significant issues in the past with running out of
+        resources, since the version used was a few years old and before Siemens began adding GPU
+        compatibility. To determine if it was worth swapping to a newer version and get the rest of the team
+        up-to-speed with the new setup (as the UI had some significant differences to the incumbent version),
+        I conducted a study on resource usage, simulation time, and resource availability using the current
+        version and the new version of STAR-CCM+.
+      </p>
+
+      <h2>Setup</h2>
+      <p>
+        Using a base simulation of the 2024–2025 season's competition plane at 3 degrees AoA, meshes were
+        generated at base sizes between 1 m and 2 m at equal increments, resulting in meshes ranging between
+        2 million and 40 million cells. Texas A&amp;M HPRC's Grace supercomputer has nodes containing CPUs only,
+        2 A100s per node, 3 A40s per node, 2 RTX 6000s per node, and 4 T4s per node, so simulations were set up
+        utilizing all these nodes for study.
+      </p>
+      <p>
+        To confirm that no issues arise with setup across the new versions, one example simulation run was
+        completed, ensuring all force, moment, and plane information reports were appropriately set up, and
+        that variances of values between versions were under 2% across all relevant metrics.
+      </p>
+
+      <h2>Results</h2>
+      <figure class="zoomable">
+        <img src="../assets/img/gpu/gpu-savings-chart.svg" alt="Line chart of percent solver time saved versus CPU for A100, RTX 6000 and T4 GPU nodes across mesh base sizes from 1 m to 2 m. A100 saves 57 to 86 percent, RTX 6000 35 to 73 percent, T4 35 to 72 percent; savings are largest at the finest mesh." loading="lazy">
+        <figcaption><strong>Elapsed (true solver) time saved</strong> vs. CPU-only v17, from the tables below. Smaller base size = finer mesh, more cells.</figcaption>
+      </figure>
+
+      <!-- data-heat colours each numeric cell (green = savings, red = negative).
+           The shared min/max keeps the colour scale identical across all three tables. -->
+      <div class="table-wrap">
+        <table data-heat data-heat-min="-25" data-heat-max="90">
+          <caption>A100 GPU — 1 node, 2 GPUs per node · percent savings vs. CPU v17</caption>
+          <thead><tr><th>Mesh base size (m)</th><th>Elapsed time</th><th>Total time</th><th>SUs</th><th>SUs / million cells</th></tr></thead>
+          <tbody>
+            <tr><th>1</th>    <td>86.23%</td><td>86.27%</td><td>67.97%</td><td>68.91%</td></tr>
+            <tr><th>1.125</th><td>80.37%</td><td>80.08%</td><td>54.32%</td><td>55.46%</td></tr>
+            <tr><th>1.25</th> <td>77.03%</td><td>76.92%</td><td>46.39%</td><td>47.38%</td></tr>
+            <tr><th>1.375</th><td>83.37%</td><td>83.46%</td><td>61.20%</td><td>61.70%</td></tr>
+            <tr><th>1.5</th>  <td>74.73%</td><td>74.50%</td><td>41.03%</td><td>41.55%</td></tr>
+            <tr><th>1.625</th><td>65.82%</td><td>65.83%</td><td>20.24%</td><td>21.01%</td></tr>
+            <tr><th>1.75</th> <td>68.33%</td><td>68.00%</td><td>26.12%</td><td>27.31%</td></tr>
+            <tr><th>1.875</th><td>59.89%</td><td>59.76%</td><td>6.39%</td><td>10.33%</td></tr>
+            <tr><th>2</th>    <td>56.54%</td><td>57.47%</td><td>−1.43%</td><td>2.62%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table data-heat data-heat-min="-25" data-heat-max="90">
+          <caption>RTX 6000 GPU — 1 node, 2 GPUs per node · percent savings vs. CPU v17</caption>
+          <thead><tr><th>Mesh base size (m)</th><th>Elapsed time</th><th>Total time</th><th>SUs</th><th>SUs / million cells</th></tr></thead>
+          <tbody>
+            <tr><th>1</th>    <td>72.69%</td><td>68.08%</td><td>54.64%</td><td>55.97%</td></tr>
+            <tr><th>1.125</th><td>63.50%</td><td>53.02%</td><td>39.33%</td><td>40.84%</td></tr>
+            <tr><th>1.25</th> <td>62.26%</td><td>52.04%</td><td>35.88%</td><td>37.06%</td></tr>
+            <tr><th>1.375</th><td>71.87%</td><td>71.72%</td><td>53.11%</td><td>53.72%</td></tr>
+            <tr><th>1.5</th>  <td>57.82%</td><td>57.80%</td><td>29.71%</td><td>30.33%</td></tr>
+            <tr><th>1.625</th><td>47.28%</td><td>47.69%</td><td>12.12%</td><td>12.97%</td></tr>
+            <tr><th>1.75</th> <td>48.60%</td><td>49.42%</td><td>14.35%</td><td>15.73%</td></tr>
+            <tr><th>1.875</th><td>39.13%</td><td>40.24%</td><td>−1.48%</td><td>2.80%</td></tr>
+            <tr><th>2</th>    <td>34.87%</td><td>34.51%</td><td>−8.53%</td><td>−4.22%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table data-heat data-heat-min="-25" data-heat-max="90">
+          <caption>T4 GPU — 1 node, 4 GPUs per node · percent savings vs. CPU v17</caption>
+          <thead><tr><th>Mesh base size (m)</th><th>Elapsed time</th><th>Total time</th><th>SUs</th><th>SUs / million cells</th></tr></thead>
+          <tbody>
+            <tr><th>1</th>    <td>61.10%</td><td>60.93%</td><td>41.84%</td><td>43.55%</td></tr>
+            <tr><th>1.125</th><td>59.80%</td><td>46.02%</td><td>39.87%</td><td>41.37%</td></tr>
+            <tr><th>1.25</th> <td>54.64%</td><td>12.04%</td><td>31.96%</td><td>33.21%</td></tr>
+            <tr><th>1.375</th><td>72.32%</td><td>54.19%</td><td>58.47%</td><td>59.01%</td></tr>
+            <tr><th>1.5</th>  <td>39.48%</td><td>−22.81%</td><td>9.23%</td><td>10.02%</td></tr>
+            <tr><th>1.625</th><td>50.51%</td><td>8.84%</td><td>25.77%</td><td>26.49%</td></tr>
+            <tr><th>1.75</th> <td>47.76%</td><td>47.75%</td><td>21.63%</td><td>22.89%</td></tr>
+            <tr><th>1.875</th><td>34.64%</td><td>34.55%</td><td>1.97%</td><td>6.09%</td></tr>
+            <tr><th>2</th>    <td>35.12%</td><td>35.84%</td><td>2.68%</td><td>6.56%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Notes</strong></p>
+      <ul>
+        <li>Elapsed time represents true solver time; total time represents wall time according to the compute cluster.</li>
+        <li>All GPU setups reduced true solver time, while most setups reduced SU (resource) usage.</li>
+      </ul>
+
+      <h2>Challenges &amp; Conclusion</h2>
+      <!-- TODO: this paragraph was unfinished in the PDF. Original text:
+           "The big challenge that was encountered when ensuring the simulation was correctly set up in
+            the new version is that documentation of changes between each version iteration is well
+            documented, but ..."
+           Finish the thought and paste it in as a <p> here. -->
+      <p>
+        Based on the SU results, it was determined that as mesh cell count increases in the simulation, the
+        more time and resources are saved by swapping over to GPU compute, assuming all other conditions are
+        the same. Most of our simulations have similar mesh counts to the ones run at the 1 m base size in the
+        table above, meaning that guiding everyone to swap over to v19.06.008 of STAR-CCM+ from v17.02.008 was
+        an easy decision to make. With later simulations, it was also determined that k-ω Shear Stress
+        Transport simulations using the Implicit Unsteady solver in STAR-CCM+ would also run significantly
+        faster and with much less resources than CPU compute, and opened up using that solver (along with other
+        more-demanding solvers) to further analyze flow separation and stall regimes with our aircraft and
+        figure out methods to either mitigate early stall or determine the stall wasn't severe enough at those
+        angles of attack to worry about them.
+      </p>
+
+      <nav class="pager" id="pager" aria-label="Previous / next project"></nav>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

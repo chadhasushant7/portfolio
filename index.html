@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sushant Chadha — Engineering Portfolio</title>
+  <meta name="description" content="Engineering portfolio of Sushant Chadha: CFD, fluid–structure interaction and GPU-accelerated simulation work for the Texas A&M SAE Aero Design team.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Remembers the visitor's light/dark choice before the page paints (avoids a flash). -->
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+
+<!-- data-root is "" here because index.html sits at the site root. -->
+<body data-page="home" data-root="">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-nav"></div>   <!-- nav bar is built from assets/js/site.js -->
+
+  <main id="main">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Engineering Portfolio</div>
+          <h1 data-fill="name">Sushant Chadha</h1>
+          <p class="tagline" data-fill="tagline">CFD, fluid–structure interaction and simulation automation for the Texas A&M SAE Aero Design team.</p>
+
+          <!-- EDIT ME: a short intro. Two or three sentences is plenty for a recruiter. -->
+          <p>
+            I build simulation workflows that answer real design questions for a competition aircraft team:
+            coupling Ansys and STAR-CCM+ to see how a flexible wing changes its own aerodynamics, modeling
+            propeller wash to settle a motor-placement debate, and benchmarking GPU solvers on Texas A&amp;M's
+            HPRC clusters to decide which software version the whole team should move to.
+          </p>
+          <p>
+            Each study below is written up the same way — <strong>Overview → Setup → Results → Challenges &amp; Conclusion</strong> —
+            so you can skim the takeaways or dig into the numbers.
+          </p>
+
+          <div class="btn-row" id="hero-buttons"></div>   <!-- buttons come from site.js (résumé, email, LinkedIn…) -->
+
+          <h3 class="small muted" style="margin-top:1.6em">Tools &amp; skills</h3>
+          <ul class="chips" id="skills"></ul>              <!-- chips come from SITE.skills -->
+        </div>
+
+        <aside class="facts" id="facts"></aside>            <!-- "At a glance" box comes from SITE.facts -->
+      </div>
+    </section>
+
+    <!-- ================= PROJECTS ================= -->
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-head">
+          <h2>Projects</h2>
+          <!-- Cards below are generated from the PROJECTS list in assets/js/site.js -->
+        </div>
+        <div class="cards" id="project-grid"></div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT + CONTACT ================= -->
+    <section class="section" id="about">
+      <div class="container two-col">
+        <div>
+          <h2 style="margin-top:0">About</h2>
+          <!-- EDIT ME: background, degree, what you're looking for. -->
+          <p>
+            I'm an engineering student at Texas A&amp;M University and a member of the SAE Aero Design team,
+            where I lead the team's simulation tooling. My interests sit at the intersection of aerodynamics,
+            structures and computing: making high-fidelity analysis fast and repeatable enough that the team
+            can actually use it during a design cycle.
+          </p>
+          <p>
+            Beyond the studies on this site, I maintain the team's STAR-CCM+ base simulations, help teammates
+            get set up on the HPRC clusters, and am currently working on validating our CFD against flight data
+            from an onboard inertial measurement unit.
+          </p>
+        </div>
+        <div id="contact">
+          <h2 style="margin-top:0">Contact</h2>
+          <p>Happy to talk about internships, research, or anything simulation-related.</p>
+          <ul class="contact-list" id="contact-list"></ul>   <!-- links come from site.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>   <!-- footer is built from site.js -->
+
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

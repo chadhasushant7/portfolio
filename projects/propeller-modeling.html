@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Propeller Modeling in STAR-CCM+ — Sushant Chadha</title>
+  <meta name="description" content="Virtual Disk (Blade Element Method) propeller modeling in STAR-CCM+ to study how motor placement changes lift, stabilizer downforce, pitching moment and trim on SAE Aero aircraft.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+
+<body data-page="project" data-root="../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-nav"></div>
+
+  <main class="container page" id="main">
+
+    <aside class="sidebar">
+      <a class="back" href="../index.html#projects">← All projects</a>
+      <h4>On this page</h4>
+      <nav class="toc" id="toc" aria-label="On this page"></nav>
+      <details class="toc-mobile"><summary>Jump to section</summary><nav id="toc-mobile"></nav></details>
+      <h4 class="h4-gap">Other projects</h4>
+      <ul id="sidebar-projects"></ul>
+    </aside>
+
+    <article>
+      <header class="project-head">
+        <div class="eyebrow" id="project-eyebrow">Project</div>
+        <h1>Propeller Modeling in STAR-CCM+</h1>
+        <p class="lead">
+          Using the Virtual Disk model to put propeller wash into the team's standard CFD setup and settle
+          how much motor placement really matters — on the 2025–26 competition plane and a biplane concept.
+        </p>
+        <!-- EDIT ME: dates are inferred from the write-up — adjust as needed. -->
+        <div class="meta">
+          <span><strong>Tools</strong> STAR-CCM+ (Virtual Disk / BEM) · ThrustLab · APC propeller data</span>
+          <span><strong>Role</strong> Simulation setup &amp; analysis</span>
+          <span><strong>When</strong> 2025–26 season &amp; summer 2026 planform study</span>
+        </div>
+
+        <div class="callout">
+          <h3>Key takeaways</h3>
+          <ul>
+            <li>Modeled all four propellers with STAR-CCM+'s Virtual Disk model (Blade Element Method, APC geometry, RPM from ThrustLab) — a steady, time-averaged approach far cheaper than an overset-mesh unsteady simulation of the full propeller.</li>
+            <li>On the competition plane, swept motor position (0, 3.5, 7, 9.5 in ahead of the leading edge, plus no motors) across 0–12° AoA; propeller wash gave roughly 12–30% more main-wing lift than the no-motor case, and stabilizer downforce proved more sensitive than expected.</li>
+            <li>On the biplane, motor placement moved the trim angle of attack from 2.5° (2 ft gap, lower wing) to 6.4° (no motors) at 10% static margin — a large enough swing to matter in planform selection. Further validation is planned.</li>
+          </ul>
+        </div>
+      </header>
+
+      <h2>Overview</h2>
+      <p>
+        With a new ruleset arriving for Regular Class in the 2025–26 competition season, a new powertrain rule was
+        brought about, meaning the team had a lot more freedom in determining what motors and propellers to use
+        for the plane, along with motor placement. This was a big discussion in that competition year, as there
+        was a debate between placing the motors right on the wing's leading edge and somewhere out in front,
+        where they would be an independent structure (and easier for the structures team to design and build).
+        Although this worked in practice and we were overall happy with the decision, questions remained on
+        whether this had any aerodynamic impacts on the plane.
+      </p>
+      <p>
+        The team decided that determining how to simulate propeller wash onto the main wing would be something
+        worth looking into, and we put it on the docket for something additional to validate, since we can test
+        this in combination with developing an inertial measurement unit to validate our CFD simulations in
+        real-world conditions, not just wind tunnels using a NACA 0012.
+      </p>
+
+      <h2>Setup</h2>
+      <figure class="zoomable narrow">
+        <img src="../assets/img/propeller/virtual-disk-setup.png" alt="Translucent CAD view of the aircraft in STAR-CCM+ with four magenta virtual-disk propellers ahead of the wing, labelled Propeller 1 through 4." loading="lazy">
+        <figcaption><strong>Virtual Disk setup.</strong> The four propeller disks of the simulated powertrain are highlighted in magenta.</figcaption>
+      </figure>
+      <p>
+        Using the team's standard STAR-CCM+ base simulation and base settings to maintain continuity between
+        results, I set up the Virtual Disk model for all four propellers, using the Blade Element Method and
+        standard propeller geometry taken from APC to set up the disks themselves. Rotation speed was determined
+        by using ThrustLab's calculated motor RPM for the powertrain simulated. Blade Element Method was selected
+        since it's a cheap way to get propeller impacts in a simulation, in comparison to modeling the full
+        propeller in CAD and creating an overset mesh with an unsteady simulation, which is significantly more
+        expensive resource-wise. In a steady simulation, STAR-CCM+ permits a time-averaged calculation of
+        propeller movement, which was chosen for resources. This model was designed with helicopter rotors in
+        mind and was deemed suitable for our use case of propeller modeling.
+      </p>
+      <p>
+        An identical setup was also run for an example biplane design, created by one of the two groups doing
+        large-scale planform studies over the summer. Using various motor placements (2 ft gap on upper wing,
+        2 ft gap on lower wing, 1 ft gap on upper wing, none) centered about the XZ midplane, impacts on lift,
+        moment, and estimated trim AoA were analyzed.
+      </p>
+
+      <h2>Results</h2>
+
+      <h3>Model 1: 2025–2026 Competition Plane</h3>
+      <p>
+        The model was set up with our competition plane from the 2025–26 season, and had motors placed 3.5 in,
+        7 in, and 9.5 in in front of the main wing leading edge, simulating wing-LE motor placement, actual motor
+        placement, and somewhere in between.
+      </p>
+
+      <figure class="zoomable">
+        <img src="../assets/img/propeller/velocity-xz-0aoa.png" alt="Four velocity-magnitude scenes on the XZ plane at 0 degrees angle of attack: no motors, and motors 3.5, 7 and 9.5 inches ahead of the leading edge." loading="lazy">
+        <figcaption><strong>Velocity scene, XZ plane, 0° AoA.</strong> Clockwise from top-left: no motors, 3.5 in, 9.5 in, 7 in ahead of the leading edge.</figcaption>
+      </figure>
+      <figure class="zoomable">
+        <img src="../assets/img/propeller/velocity-xz-9aoa.png" alt="Four velocity-magnitude scenes on the XZ plane at 9 degrees angle of attack: no motors, and motors 3.5, 7 and 9.5 inches ahead of the leading edge." loading="lazy">
+        <figcaption><strong>Velocity scene, XZ plane, 9° AoA.</strong> Same four configurations as above.</figcaption>
+      </figure>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Competition plane — main wing lift and horizontal-stabilizer downforce vs. motor position ahead of the leading edge</caption>
+          <thead>
+            <tr>
+              <th rowspan="2">AoA (°)</th>
+              <th colspan="5">Main wing lift</th>
+              <th colspan="5">H-stab downforce</th>
+            </tr>
+            <tr>
+              <th>0 in</th><th>3.5 in</th><th>7 in</th><th>9.5 in</th><th>None</th>
+              <th>0 in</th><th>3.5 in</th><th>7 in</th><th>9.5 in</th><th>None</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>0</th> <td>43.30</td><td>42.94</td><td>43.79</td><td>43.57</td><td>35.44</td> <td>6.23</td><td>7.02</td><td>6.69</td><td>6.70</td><td>5.34</td></tr>
+            <tr><th>3</th> <td>53.48</td><td>54.35</td><td>55.90</td><td>55.44</td><td>46.03</td> <td>5.90</td><td>6.44</td><td>6.69</td><td>6.75</td><td>4.88</td></tr>
+            <tr><th>6</th> <td>64.55</td><td>66.48</td><td>67.50</td><td>66.91</td><td>56.59</td> <td>5.38</td><td>6.73</td><td>6.83</td><td>6.49</td><td>4.37</td></tr>
+            <tr><th>9</th> <td>75.23</td><td>78.66</td><td>79.67</td><td>78.16</td><td>66.90</td> <td>5.25</td><td>6.08</td><td>6.51</td><td>7.05</td><td>3.85</td></tr>
+            <tr><th>12</th><td>87.80</td><td>90.46</td><td>91.19</td><td>89.65</td><td>70.31</td> <td>5.22</td><td>6.09</td><td>6.62</td><td>6.86</td><td>1.70</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Model 2: 2026–2027 Biplane Planform Study</h3>
+      <div class="fig-row">
+        <figure class="zoomable">
+          <img src="../assets/img/propeller/biplane-lower-wing.png" alt="Velocity scene of the biplane concept with the motors mounted on the lower wing." loading="lazy">
+          <figcaption><strong>Figure 1.</strong> Motors placed on the lower wing.</figcaption>
+        </figure>
+        <figure class="zoomable">
+          <img src="../assets/img/propeller/biplane-upper-wing.png" alt="Velocity scene of the biplane concept with the motors mounted on the upper wing." loading="lazy">
+          <figcaption><strong>Figure 2.</strong> Motors placed on the upper wing.</figcaption>
+        </figure>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Biplane — lift-to-drag ratio</caption>
+          <thead><tr><th>AoA (°)</th><th>2U</th><th>2L</th><th>1U</th><th>0</th></tr></thead>
+          <tbody>
+            <tr><th>0</th> <td>4.43</td><td>3.94</td><td>4.04</td><td>4.04</td></tr>
+            <tr><th>3</th> <td>6.20</td><td>5.72</td><td>5.74</td><td>5.80</td></tr>
+            <tr><th>6</th> <td>6.63</td><td>6.46</td><td>6.29</td><td>6.17</td></tr>
+            <tr><th>9</th> <td>6.44</td><td>6.26</td><td>6.21</td><td>5.97</td></tr>
+            <tr><th>12</th><td>5.94</td><td>5.73</td><td>5.85</td><td>5.29</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Biplane — pitching moment about the CG</caption>
+          <thead><tr><th>AoA (°)</th><th>2U</th><th>2L</th><th>1U</th><th>0</th></tr></thead>
+          <tbody>
+            <tr><th>0</th> <td>8.73</td><td>4.71</td><td>9.29</td><td>11.08</td></tr>
+            <tr><th>3</th> <td>3.56</td><td>−0.94</td><td>4.11</td><td>5.87</td></tr>
+            <tr><th>6</th> <td>−4.23</td><td>−8.29</td><td>−3.51</td><td>−1.08</td></tr>
+            <tr><th>9</th> <td>−14.68</td><td>−18.63</td><td>−14.87</td><td>−8.76</td></tr>
+            <tr><th>12</th><td>−26.54</td><td>−27.91</td><td>−27.04</td><td>−17.61</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Biplane — trim AoA at 10% static margin</caption>
+          <thead><tr><th>Configuration</th><th>2U</th><th>2L</th><th>1U</th><th>0</th></tr></thead>
+          <tbody>
+            <tr><th>Trim AoA (°)</th><td>5.066</td><td>2.500</td><td>5.386</td><td>6.384</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Notes</strong></p>
+      <ul>
+        <li><strong>U</strong> represents upper wing, <strong>L</strong> represents lower wing, numbers represent the gap between motors in ft.</li>
+        <li><strong>0</strong> represents a simulation with no motors.</li>
+        <li>L/D is presented for a more representative view of why motor placement matters more than expected in a biplane.</li>
+        <li>Results of horizontal stabilizer downforce on the competition plane are much more significant than expected; it's believed to be a coincidence due to horizontal stabilizer z-position.</li>
+        <li>Further validation is required to confirm the physical impact of these results.</li>
+      </ul>
+
+      <!-- ===== OPTIONAL: interactive scene / video =====
+           Example of a click-to-load embed (YouTube, Sketchfab, a hosted viewer, …):
+
+      <figure class="embed" data-src="https://www.youtube.com/embed/VIDEO_ID" data-ratio="16/9">
+        <figcaption>Propeller wash animation, 9° AoA.</figcaption>
+      </figure>
+      -->
+
+      <nav class="pager" id="pager" aria-label="Previous / next project"></nav>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

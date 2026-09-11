@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Two-Way Fluid–Structure Interaction Simulation — Sushant Chadha</title>
+  <meta name="description" content="A Python-driven two-way FSI loop between Ansys Mechanical APDL and STAR-CCM+ to quantify the aerodynamic effect of wing deflection on a thin-airfoil SAE Aero design.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+
+<!-- data-root="../" because this file lives one folder down, in projects/ -->
+<body data-page="project" data-root="../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-nav"></div>
+
+  <main class="container page" id="main">
+
+    <!-- ===== SIDEBAR (filled automatically — no need to edit) ===== -->
+    <aside class="sidebar">
+      <a class="back" href="../index.html#projects">← All projects</a>
+      <h4>On this page</h4>
+      <nav class="toc" id="toc" aria-label="On this page"></nav>
+      <details class="toc-mobile"><summary>Jump to section</summary><nav id="toc-mobile"></nav></details>
+      <h4 class="h4-gap">Other projects</h4>
+      <ul id="sidebar-projects"></ul>
+    </aside>
+
+    <!-- ===== ARTICLE ===== -->
+    <article>
+      <header class="project-head">
+        <div class="eyebrow" id="project-eyebrow">Project</div>
+        <h1>Two-Way Fluid–Structure Interaction Simulation</h1>
+        <p class="lead">
+          Coupling Ansys Mechanical APDL and STAR-CCM+ through a Python driver to quantify how a thin-airfoil
+          wing's structural deflection changes its aerodynamic performance.
+        </p>
+        <!-- EDIT ME: dates are inferred from the write-up — adjust as needed. -->
+        <div class="meta">
+          <span><strong>Tools</strong> STAR-CCM+ · Ansys Mechanical APDL · Python</span>
+          <span><strong>Role</strong> Simulation setup, automation &amp; analysis</span>
+          <span><strong>When</strong> Summer 2026, after the 2025–26 season</span>
+        </div>
+
+        <div class="callout">
+          <h3>Key takeaways</h3>
+          <ul>
+            <li>Built a two-way FSI loop between Ansys Mechanical APDL and STAR-CCM+ — two tools with no direct API to each other — using a Python driver plus each program's own automation features.</li>
+            <li>Example case: a 5 ft half-span A18 wing with a 3 ft chord deflects 4.46 in at the tip, yet lift changes by only −1.1%, drag by −0.75% and L/D by −0.44% versus the rigid structure.</li>
+            <li>Conclusion: for the team's standard wing design, structural deflection has minimal aerodynamic impact; the item to watch is the redirected tip vortex hitting a large horizontal stabilizer.</li>
+          </ul>
+        </div>
+      </header>
+
+      <h2>Overview</h2>
+      <p>
+        After the 2025–2026 SAE Aero Competition season completed, the team did a retrospective and determined
+        that looking at planforms that are low-drag and high-velocity are the key to getting the most out of the
+        ruleset, which was a stark departure from rulesets of years prior. To meet this demand, the team decided
+        to look into potential thin-airfoil structures (&lt;11% thickness) and alternative planforms, such as
+        canards. After performing finite element analysis (FEA) on the derived structure of one of these
+        airfoils, it was revealed that our standard manufacturing methods would cause a wing of 5 ft half span to
+        have a 4.4 inch deflection at the tip, significantly more than in prior years. To quantify further
+        aerodynamic and structural impacts of this deflection, I developed a setup for FSI simulation between our
+        team's validated tools of choice: Ansys Mechanical APDL and STAR-CCM+.
+      </p>
+      <p>
+        Since STAR-CCM+ doesn't have a direct API with Ansys, I created a Python script to take advantage of
+        each program's automation features and have it run the process that would have been significantly more
+        tedious by hand for more than one iteration of the loop.
+      </p>
+
+      <h2>Setup</h2>
+      <figure class="zoomable narrow">
+        <img src="../assets/img/fsi/loop-flowchart.png" alt="Flowchart of the FSI loop: a one-time Mechanical APDL static structural run exports displacements to CSV; FSI_Driver.py checks convergence (delta-u under 2%), interpolates a 2D grid for STAR-CCM+, runs the CFD, and PressureMap2Structure.py converts the pressure and force export back into imported loads for the next APDL run." loading="lazy">
+        <figcaption><strong>FSI loop.</strong> <code>FSI_Driver.py</code> is the script the user runs; the loop exits once the change in displacement between iterations drops below 2%.</figcaption>
+      </figure>
+      <p>
+        A flowchart with the loop setup is seen above. <code>FSI_Driver.py</code> is the Python script that the
+        user runs, with displacement <code>.csv</code> exports being handled by APDL commands baked into the base
+        simulation.
+      </p>
+      <p>
+        The STAR-CCM+ base sim was the same as the one the team traditionally uses but includes a simulation
+        operation to deform the mesh according to the interpolated displacement table taken from Ansys.
+      </p>
+      <p>
+        The Ansys base sim is also identical to the one the team traditionally uses, outside of one extra APDL
+        command snippet to export the displacements to a consistently-formatted <code>.csv</code> file.
+      </p>
+
+      <h2>Results</h2>
+      <p>
+        An example load case of a 5 ft half-span A18 airfoil with a 3 ft chord was run, providing deflections and
+        2 ft aft flow scenes as seen below.
+      </p>
+
+      <figure class="zoomable">
+        <img src="../assets/img/fsi/total-deflection.png" alt="Ansys total deformation scene of the A18 wing half-span viewed along the x-axis, coloured from blue at the root to red at the tip." loading="lazy">
+        <figcaption><strong>Total deflection</strong> of the A18 wing structure as seen from the x-axis. Max deflection of 4.46 in encountered at the wingtip trailing edge.</figcaption>
+      </figure>
+
+      <figure class="zoomable">
+        <img src="../assets/img/fsi/pressure-scenes.png" alt="Two side-by-side STAR-CCM+ pressure scenes on a YZ plane 2 ft aft of the trailing edge: deflected structure on the left, static structure on the right." loading="lazy">
+        <figcaption><strong>Left:</strong> pressure scene of the deflected structure. <strong>Right:</strong> pressure scene of the static structure. Both scenes taken using a YZ plane set 2 ft aft of the main wing trailing edge.</figcaption>
+      </figure>
+
+      <!-- ===== OPTIONAL: interactive scene =====
+           To let a recruiter spin the scene themselves, export it from STAR-CCM+
+           (Scene → Export → .sce), drop the file in assets/scenes/, and un-comment:
+
+      <figure class="embed" data-mode="scene" data-src="../assets/scenes/fsi-pressure-deflected.sce"
+              data-poster="../assets/img/fsi/pressure-scenes.png" data-title="Pressure scene — deflected structure" data-size="6 MB">
+        <figcaption>YZ plane 2 ft aft of the main wing trailing edge, deflected structure.</figcaption>
+      </figure>
+      -->
+
+      <div class="table-wrap">
+        <table>
+          <caption>Aerodynamic loads, static vs. deflected structure</caption>
+          <thead>
+            <tr><th></th><th>Static structure</th><th>Deflected structure</th><th>% difference</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>Lift (lbf)</th><td>47.387</td><td>46.830</td><td>−1.1%</td></tr>
+            <tr><th>Drag (lbf)</th><td>7.183</td><td>7.129</td><td>−0.75%</td></tr>
+            <tr><th>L/D</th><td>6.597</td><td>6.568</td><td>−0.44%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Challenges &amp; Conclusion</h2>
+      <p>
+        One of the biggest challenges I ran into was learning Ansys's command syntax, as neither I nor anyone on
+        the team had used APDL commands before (or had experience automating any part of Ansys's workflow), and
+        Ansys's documentation was not the most user-friendly reference, so setting up the displacement export
+        script was a challenge. Additionally, although STAR-CCM+ has a file-based co-simulation option using Ansys
+        <code>.cdb</code> databases, that was for if you wanted to import that direct structure, and it would
+        track the deformations of the Ansys structure. However, since the goal was to map the structural
+        displacements directly to the outer mold line of the plane (the main difference between our Ansys and
+        STAR-CCM+ simulations), the interpolation had to be done outside of the simulation. Therefore, the change
+        in approach was made from directly using <code>.cdb</code> files to having a Python script interpolate
+        the exported displacements from Ansys across the entire outer mold line for STAR-CCM+ to deform using the
+        simulation operations.
+      </p>
+      <p>
+        The resulting data shows that, with the designed structure, the impact of the structural deflection on
+        aerodynamic numbers using the team's standard wing design is expected to be minimal, with the only area
+        of concern being impacts on large horizontal stabilizers caused by the redirection of the vortex. On the
+        plane last year, our horizontal stabilizer was significantly smaller span-wise than the main wing, so the
+        impacts of this deflection on the horizontal stabilizer are minimal.
+      </p>
+      <p>
+        The next big step for the FSI loop is to determine whether it is possible and resource-friendly to
+        simulate a structural deformation including the team's heat-shrink covering. This requires an initial
+        thermal condition across a thin sheet of polyethylene, and requires more resources than initially
+        expected. This portion of the investigation will continue once Ansys is functional on Texas A&amp;M HPRC's
+        systems, since the significance of the covering to the structural rigidity of the plane is still
+        unquantified.
+      </p>
+
+      <nav class="pager" id="pager" aria-label="Previous / next project"></nav>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
