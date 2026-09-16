@@ -20,9 +20,11 @@
   const $ = (sel, el = document) => el.querySelector(sel);
   const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const tel = (s) => "tel:" + String(s).replace(/[^\d+]/g, "");   // "+1 (979) 555-0123" → "tel:+19795550123"
 
   const ICON = {
     mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+    phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.8 2z"/></svg>',
     linkedin: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>',
     github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>',
     file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>',
@@ -107,6 +109,7 @@
       if (SITE.resume) out.push(`<a class="btn" href="${esc(SITE.resume)}" target="_blank" rel="noopener">${ICON.file} Résumé</a>`);
       if (SITE.portfolioPdf) out.push(`<a class="btn" href="${esc(SITE.portfolioPdf)}" target="_blank" rel="noopener">${ICON.file} Portfolio (PDF)</a>`);
       if (SITE.email) out.push(`<a class="btn" href="mailto:${esc(SITE.email)}">${ICON.mail} Email</a>`);
+      if (SITE.phone) out.push(`<a class="btn" href="${tel(SITE.phone)}">${ICON.phone} Call</a>`);
       if (SITE.linkedin) out.push(`<a class="btn" href="${esc(SITE.linkedin)}" target="_blank" rel="noopener">${ICON.linkedin} LinkedIn</a>`);
       if (SITE.github) out.push(`<a class="btn" href="${esc(SITE.github)}" target="_blank" rel="noopener">${ICON.github} GitHub</a>`);
       btns.innerHTML = out.join("");
@@ -144,6 +147,7 @@
     if (contact) {
       const out = [];
       if (SITE.email) out.push(`<li><a href="mailto:${esc(SITE.email)}">${ICON.mail} ${esc(SITE.email)}</a></li>`);
+      if (SITE.phone) out.push(`<li><a href="${tel(SITE.phone)}">${ICON.phone} ${esc(SITE.phone)}</a></li>`);
       if (SITE.linkedin) out.push(`<li><a href="${esc(SITE.linkedin)}" target="_blank" rel="noopener">${ICON.linkedin} LinkedIn</a></li>`);
       if (SITE.github) out.push(`<li><a href="${esc(SITE.github)}" target="_blank" rel="noopener">${ICON.github} GitHub</a></li>`);
       if (SITE.resume) out.push(`<li><a href="${esc(SITE.resume)}" target="_blank" rel="noopener">${ICON.file} Résumé (PDF)</a></li>`);

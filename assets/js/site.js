@@ -16,6 +16,7 @@ const SITE = {
 
   // Contact / social links. Leave any value as "" to hide that button.
   email:    "chadhasushant7@outlook.com",                                 // e.g. "you@example.com"
+  phone:    "+1 (609) 613-8466",                                                           // e.g. "+1 (979) 555-0123" — shown on the home page; "" to hide
   linkedin: "https://www.linkedin.com/in/sushant-chadha-5b0b96231/",                                 // e.g. "https://www.linkedin.com/in/your-handle"
   github:   "https://github.com/chadhasushant7",                                 // e.g. "https://github.com/your-handle"
   resume:   "assets/docs/Resume - Sushant Chadha.pdf",                                 // e.g. "assets/docs/resume.pdf"  (drop the file in assets/docs/)

@@ -59,7 +59,7 @@ site works at either URL and from a local folder.
 ## 3. Edit your info (name, links, résumé)
 
 Open `assets/js/site.js`. The `SITE` object at the top holds your name, tagline,
-email, LinkedIn, GitHub, résumé path, skills chips and the "At a glance" facts.
+email, phone, LinkedIn, GitHub, résumé path, skills chips and the "At a glance" facts.
 Leave any link as `""` to hide its button. Drop your résumé at
 `assets/docs/resume.pdf` and set `resume: "assets/docs/resume.pdf"`.
 
@@ -141,7 +141,7 @@ over HTTPS, so browsers will block frames pointing at plain `http://` servers
 
 ## 7. Things to check before sharing
 
-- [ ] Fill in `email` / `linkedin` / `github` in `assets/js/site.js`
+- [ ] Fill in `email` / `phone` / `linkedin` / `github` in `assets/js/site.js`
 - [ ] Add `assets/docs/resume.pdf` and set `resume` in `site.js`
 - [ ] Rewrite the `EDIT ME` intro/About paragraphs in `index.html` in your own words
 - [ ] Check the **When** / **Role** lines at the top of each project page

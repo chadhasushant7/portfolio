@@ -8,10 +8,10 @@
 
 /* ---------- THEME TOKENS (edit these) ---------- */
 :root {
-  --accent:        #500000;            /* links, buttons, highlights (Aggie maroon) */
-  --accent-hover:  #7a1a1a;
+  --accent:        #6f4dcc;            /* links, buttons, highlights (lavender) */
+  --accent-hover:  #c4448c;            /* hover state (pink) */
   --accent-ink:    #ffffff;            /* text on top of --accent */
-  --accent-soft:   rgba(80, 0, 0, 0.08);
+  --accent-soft:   rgba(111, 77, 204, 0.10);
 
   --bg:            #f7f6f3;            /* page background */
   --surface:       #ffffff;            /* cards, nav, tables */
@@ -46,10 +46,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --accent:       #e88d8d;
-    --accent-hover: #f3a8a8;
-    --accent-ink:   #1b0a0a;
-    --accent-soft:  rgba(232, 141, 141, 0.12);
+    --accent:       #b9a3f0;
+    --accent-hover: #f0a3cf;
+    --accent-ink:   #1a1030;
+    --accent-soft:  rgba(185, 163, 240, 0.14);
     --bg:           #121211;
     --surface:      #1c1c1a;
     --surface-2:    #262523;
@@ -63,10 +63,10 @@
   }
 }
 :root[data-theme="dark"] {
-  --accent:       #e88d8d;
-  --accent-hover: #f3a8a8;
-  --accent-ink:   #1b0a0a;
-  --accent-soft:  rgba(232, 141, 141, 0.12);
+  --accent:       #b9a3f0;
+  --accent-hover: #f0a3cf;
+  --accent-ink:   #1a1030;
+  --accent-soft:  rgba(185, 163, 240, 0.14);
   --bg:           #121211;
   --surface:      #1c1c1a;
   --surface-2:    #262523;
