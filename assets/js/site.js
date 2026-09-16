@@ -15,17 +15,18 @@ const SITE = {
   location: "Texas A&M University · College Station, TX",   // shown in the "At a glance" box; leave "" to hide
 
   // Contact / social links. Leave any value as "" to hide that button.
-  email:    "",                                 // e.g. "you@example.com"
-  linkedin: "",                                 // e.g. "https://www.linkedin.com/in/your-handle"
-  github:   "",                                 // e.g. "https://github.com/your-handle"
-  resume:   "",                                 // e.g. "assets/docs/resume.pdf"  (drop the file in assets/docs/)
-  portfolioPdf: "assets/docs/portfolio.pdf",    // the original PDF portfolio; "" to hide
+  email:    "chadhasushant7@outlook.com",                                 // e.g. "you@example.com"
+  linkedin: "https://www.linkedin.com/in/sushant-chadha-5b0b96231/",                                 // e.g. "https://www.linkedin.com/in/your-handle"
+  github:   "https://github.com/chadhasushant7",                                 // e.g. "https://github.com/your-handle"
+  resume:   "assets/docs/Resume - Sushant Chadha.pdf",                                 // e.g. "assets/docs/resume.pdf"  (drop the file in assets/docs/)
+  portfolioPdf: "assets/docs/Portfolio - Sushant Chadha.pdf",    // the original PDF portfolio; "" to hide
 
   // Chips shown under the intro on the home page.
   skills: [
     "Simcenter STAR-CCM+", "Ansys Mechanical APDL", "Python", "CFD", "FEA",
     "Fluid–Structure Interaction", "Virtual Disk / Blade Element Method",
-    "GPU-accelerated CFD", "HPC (Texas A&M HPRC)", "Simulation automation"
+    "GPU-accelerated CFD", "HPC System Automation", "Multi-physics Simulation", 
+    "Aerodynamics", "Aeroelasticity", "Aerospace Engineering"
   ],
 
   // Shown in the "At a glance" box on the home page (label → value).
